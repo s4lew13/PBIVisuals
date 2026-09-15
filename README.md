@@ -80,4 +80,4 @@ Zaimportuj wygenerowany `.pbiviz` do Power BI przez **Wizualizacje → Więcej o
 
 ## Autor
 
-Łukasz Sz — Power BI developer / data engineer, doświadczenie w budowie metryk retencji, LTV i wskaźników wzrostowych (Power BI, DAX, Power Query, Microsoft Fabric).
+Łukasz Szalewicz
