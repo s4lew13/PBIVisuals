@@ -1,0 +1,25 @@
+{
+    "visual": {
+        "name": "cohortPulseRadial",
+        "displayName": "Cohort Pulse Radial",
+        "guid": "cohortPulseRadial_C0A5F1B2D3E4F5061728394A5B6C7D8E",
+        "visualClassName": "Visual",
+        "version": "1.0.0.0",
+        "description": "Radialna wizualizacja retencji kohort: każda kohorta to gasnący pierścień pulsujący od centrum na zewnątrz, pokazujący spadek retencji/LTV w czasie.",
+        "supportUrl": "https://github.com/lukasz-sz/cohort-pulse-radial",
+        "gitHubUrl": "https://github.com/lukasz-sz/cohort-pulse-radial"
+    },
+    "author": {
+        "name": "Łukasz Sz",
+        "email": "s4lew13@gmail.com"
+    },
+    "apiVersion": "5.11.0",
+    "assets": {
+        "icon": "assets/icon.png"
+    },
+    "externalJS": [],
+    "style": "style/visual.less",
+    "capabilities": "capabilities.json",
+    "dependencies": null,
+    "stringResources": []
+}

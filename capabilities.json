@@ -1,0 +1,115 @@
+{
+    "dataRoles": [
+        {
+            "name": "cohort",
+            "kind": "Grouping",
+            "displayName": "Kohorta",
+            "displayNameKey": "Role_Cohort",
+            "description": "Identyfikator kohorty, np. miesiąc akwizycji (2026-01, 2026-02...)"
+        },
+        {
+            "name": "period",
+            "kind": "Grouping",
+            "displayName": "Okres",
+            "displayNameKey": "Role_Period",
+            "description": "Numer okresu od akwizycji (0, 1, 2, 3... tygodnie/miesiące)"
+        },
+        {
+            "name": "retention",
+            "kind": "Measure",
+            "displayName": "Retencja / LTV",
+            "displayNameKey": "Role_Retention",
+            "description": "Wartość metryki: % retencji, LTV, ARPU itp.",
+            "requiredTypes": [
+                { "numeric": true }
+            ]
+        },
+        {
+            "name": "tooltipData",
+            "kind": "Measure",
+            "displayName": "Dodatkowe dane w tooltipie",
+            "displayNameKey": "Role_Tooltip",
+            "description": "Opcjonalne dodatkowe metryki wyświetlane w tooltipie"
+        }
+    ],
+    "dataViewMappings": [
+        {
+            "conditions": [
+                {
+                    "cohort": { "max": 1 },
+                    "period": { "max": 1 },
+                    "retention": { "max": 1 },
+                    "tooltipData": { "max": 5 }
+                }
+            ],
+            "categorical": {
+                "categories": {
+                    "for": { "in": "cohort" },
+                    "dataReductionAlgorithm": { "top": { "count": 30 } }
+                },
+                "values": {
+                    "group": {
+                        "by": "period",
+                        "select": [
+                            { "bind": { "to": "retention" } },
+                            { "bind": { "to": "tooltipData" } }
+                        ],
+                        "dataReductionAlgorithm": { "top": { "count": 60 } }
+                    }
+                }
+            }
+        }
+    ],
+    "objects": {
+        "dataColors": {
+            "properties": {
+                "baseColor": { "type": { "fill": { "solid": { "color": true } } } },
+                "colorScale": { "type": { "enumeration": [] } }
+            }
+        },
+        "ringLayout": {
+            "properties": {
+                "innerRadiusRatio": { "type": { "numeric": true } },
+                "ringGap": { "type": { "numeric": true } },
+                "startAngle": { "type": { "numeric": true } },
+                "sweepAngle": { "type": { "numeric": true } }
+            }
+        },
+        "centerMetric": {
+            "properties": {
+                "show": { "type": { "bool": true } },
+                "label": { "type": { "text": true } },
+                "fontSize": { "type": { "numeric": true } },
+                "fontColor": { "type": { "fill": { "solid": { "color": true } } } }
+            }
+        },
+        "dataLabels": {
+            "properties": {
+                "show": { "type": { "bool": true } },
+                "fontSize": { "type": { "numeric": true } },
+                "color": { "type": { "fill": { "solid": { "color": true } } } },
+                "decimalPlaces": { "type": { "numeric": true } },
+                "displayUnits": { "type": { "numeric": true } }
+            }
+        },
+        "legend": {
+            "properties": {
+                "show": { "type": { "bool": true } },
+                "position": { "type": { "enumeration": [] } },
+                "fontSize": { "type": { "numeric": true } }
+            }
+        }
+    },
+    "privileges": [],
+    "supportsHighlight": true,
+    "sorting": {
+        "default": {}
+    },
+    "tooltips": {
+        "supportedTypes": {
+            "default": true,
+            "canvas": true
+        },
+        "roles": ["cohort", "period", "retention", "tooltipData"]
+    }
+}

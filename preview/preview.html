@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<title>Cohort Pulse Radial — Preview</title>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<style>
+  body { font-family: "Segoe UI", sans-serif; background: #FAF9F8; margin: 0; padding: 40px; display:flex; flex-direction:column; align-items:center; }
+  h1 { font-size: 18px; color: #201F1E; margin-bottom: 4px; }
+  p.sub { color: #605E5C; font-size: 13px; margin-top:0; margin-bottom: 24px; }
+  .segmentArc:hover { opacity: 0.85; stroke-width: 1.5px; }
+  .legend text { font-size: 11px; fill: #201F1E; }
+  .center text { font-family: "Segoe UI", sans-serif; }
+</style>
+</head>
+<body>
+<h1>Cohort Pulse Radial — podgląd koncepcji</h1>
+<p class="sub">Każdy pierścień = kohorta akwizycji. Każdy segment = okres. Jaśniejszy segment = niższa retencja (gasnący puls).</p>
+<svg id="chart" width="640" height="480"></svg>
+
+<script>
+const data = [
+  {cohort:"2026-01", periods:[100,62,41,29,21]},
+  {cohort:"2026-02", periods:[100,58,37,25,18]},
+  {cohort:"2026-03", periods:[100,65,46,33,24]},
+  {cohort:"2026-04", periods:[100,70,51,38,29]},
+  {cohort:"2026-05", periods:[100,68,48,35,27]}
+];
+
+const width = 460, height = 480;
+const svg = d3.select("#chart");
+const g = svg.append("g").attr("transform", `translate(${width/2},${height/2})`);
+
+const outerRadius = 190;
+const innerRadius = 190 * 0.15;
+const ringGap = 2;
+const cohortCount = data.length;
+const bandThickness = (outerRadius - innerRadius) / cohortCount;
+const periodCount = 5;
+const baseColor = "#5B4FE9";
+
+const colorScale = d3.scaleLinear()
+  .domain([0,1])
+  .range([d3.color(baseColor).copy({opacity:0.15}).formatRgb(), baseColor]);
+
+const arc = d3.arc()
+  .innerRadius((d) => innerRadius + d.cohortIndex*bandThickness + ringGap/2)
+  .outerRadius((d) => innerRadius + (d.cohortIndex+1)*bandThickness - ringGap/2)
+  .startAngle((d) => (d.periodIndex/periodCount) * 2*Math.PI)
+  .endAngle((d) => ((d.periodIndex+1)/periodCount) * 2*Math.PI)
+  .padAngle(0.012)
+  .cornerRadius(2);
+
+const segments = [];
+data.forEach((row, cohortIndex) => {
+  const maxVal = Math.max(...row.periods);
+  row.periods.forEach((value, periodIndex) => {
+    segments.push({cohort: row.cohort, cohortIndex, periodIndex, value, maxVal});
+  });
+});
+
+g.selectAll("path")
+  .data(segments)
+  .enter()
+  .append("path")
+  .attr("class","segmentArc")
+  .attr("d", arc)
+  .attr("fill", d => colorScale(d.value/d.maxVal))
+  .attr("stroke", "#FFFFFF")
+  .attr("stroke-width", 0.5)
+  .style("cursor","pointer")
+  .append("title")
+  .text(d => `${d.cohort} — okres ${d.periodIndex}: ${d.value}%`);
+
+// center metric
+const avg = segments.reduce((s,d)=>s+d.value,0)/segments.length;
+const center = g.append("g").attr("class","center");
+center.append("text").attr("text-anchor","middle").attr("dy","-0.2em")
+  .style("font-size","26px").style("font-weight","600").style("fill","#201F1E")
+  .text(avg.toFixed(0)+"%");
+center.append("text").attr("text-anchor","middle").attr("dy","1.4em")
+  .style("font-size","11px").style("fill","#605E5C")
+  .text("śr. retencja");
+
+// legend
+const legend = svg.append("g").attr("transform", `translate(${width - 10}, 60)`);
+data.forEach((row, i) => {
+  const ly = i * 22;
+  legend.append("rect").attr("x",0).attr("y",ly).attr("width",12).attr("height",12).attr("rx",2)
+    .attr("fill", colorScale(1 - i/data.length));
+  legend.append("text").attr("x",18).attr("y",ly+10).text(row.cohort);
+});
+</script>
+</body>
+</html>

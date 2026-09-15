@@ -1,0 +1,26 @@
+{
+    "compilerOptions": {
+        "target": "es2017",
+        "module": "esnext",
+        "moduleResolution": "node",
+        "lib": ["es2017", "dom"],
+        "sourceMap": true,
+        "outDir": "./.tmp/build/",
+        "moduleDetection": "force",
+        "allowJs": true,
+        "jsx": "react",
+        "reactNamespace": "React",
+        "strict": true,
+        "strictPropertyInitialization": false,
+        "experimentalDecorators": true,
+        "noUnusedLocals": true,
+        "types": [
+            "powerbi-visuals-api",
+            "d3"
+        ]
+    },
+    "files": [
+        "src/visual.ts",
+        "src/settings.ts"
+    ]
+}
