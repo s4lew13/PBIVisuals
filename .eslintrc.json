@@ -1,0 +1,8 @@
+{
+    "extends": [
+        "plugin:powerbi-visuals/recommended"
+    ],
+    "parserOptions": {
+        "project": "./tsconfig.json"
+    }
+}

@@ -1,25 +1,25 @@
 {
     "dataRoles": [
         {
-            "name": "cohort",
+            "name": "dayAxis",
             "kind": "Grouping",
-            "displayName": "Kohorta",
-            "displayNameKey": "Role_Cohort",
-            "description": "Identyfikator kohorty, np. miesiąc akwizycji (2026-01, 2026-02...)"
+            "displayName": "Dzień / kategoria (wiersz)",
+            "displayNameKey": "Role_DayAxis",
+            "description": "Kategoria na osi wierszy, np. dzień tygodnia lub data"
         },
         {
-            "name": "period",
+            "name": "hourAxis",
             "kind": "Grouping",
-            "displayName": "Okres",
-            "displayNameKey": "Role_Period",
-            "description": "Numer okresu od akwizycji (0, 1, 2, 3... tygodnie/miesiące)"
+            "displayName": "Godzina / kategoria (kolumna)",
+            "displayNameKey": "Role_HourAxis",
+            "description": "Kategoria na osi kolumn, np. godzina 0-23"
         },
         {
-            "name": "retention",
+            "name": "intensity",
             "kind": "Measure",
-            "displayName": "Retencja / LTV",
-            "displayNameKey": "Role_Retention",
-            "description": "Wartość metryki: % retencji, LTV, ARPU itp.",
+            "displayName": "Wolumen / intensywność",
+            "displayNameKey": "Role_Intensity",
+            "description": "Wartość intensywności komórki: liczba rekordów, zdarzeń, logowań, błędów itp.",
             "requiredTypes": [
                 { "numeric": true }
             ]
@@ -36,22 +36,22 @@
         {
             "conditions": [
                 {
-                    "cohort": { "max": 1 },
-                    "period": { "max": 1 },
-                    "retention": { "max": 1 },
+                    "dayAxis": { "max": 1 },
+                    "hourAxis": { "max": 1 },
+                    "intensity": { "max": 1 },
                     "tooltipData": { "max": 5 }
                 }
             ],
             "categorical": {
                 "categories": {
-                    "for": { "in": "cohort" },
-                    "dataReductionAlgorithm": { "top": { "count": 30 } }
+                    "for": { "in": "dayAxis" },
+                    "dataReductionAlgorithm": { "top": { "count": 60 } }
                 },
                 "values": {
                     "group": {
-                        "by": "period",
+                        "by": "hourAxis",
                         "select": [
-                            { "bind": { "to": "retention" } },
+                            { "bind": { "to": "intensity" } },
                             { "bind": { "to": "tooltipData" } }
                         ],
                         "dataReductionAlgorithm": { "top": { "count": 60 } }
@@ -63,39 +63,35 @@
     "objects": {
         "dataColors": {
             "properties": {
-                "baseColor": { "type": { "fill": { "solid": { "color": true } } } },
-                "colorScale": { "type": { "enumeration": [] } }
+                "colorScale": { "type": { "enumeration": [] } },
+                "minColor": { "type": { "fill": { "solid": { "color": true } } } },
+                "maxColor": { "type": { "fill": { "solid": { "color": true } } } }
             }
         },
-        "ringLayout": {
+        "cellLayout": {
             "properties": {
-                "innerRadiusRatio": { "type": { "numeric": true } },
-                "ringGap": { "type": { "numeric": true } },
-                "startAngle": { "type": { "numeric": true } },
-                "sweepAngle": { "type": { "numeric": true } }
+                "cellGap": { "type": { "numeric": true } },
+                "cellRadius": { "type": { "numeric": true } },
+                "showAxisLabels": { "type": { "bool": true } }
             }
         },
-        "centerMetric": {
+        "anomalyDetection": {
             "properties": {
                 "show": { "type": { "bool": true } },
-                "label": { "type": { "text": true } },
-                "fontSize": { "type": { "numeric": true } },
-                "fontColor": { "type": { "fill": { "solid": { "color": true } } } }
+                "thresholdStdDev": { "type": { "numeric": true } },
+                "highlightColor": { "type": { "fill": { "solid": { "color": true } } } }
             }
         },
         "dataLabels": {
             "properties": {
                 "show": { "type": { "bool": true } },
                 "fontSize": { "type": { "numeric": true } },
-                "color": { "type": { "fill": { "solid": { "color": true } } } },
-                "decimalPlaces": { "type": { "numeric": true } },
-                "displayUnits": { "type": { "numeric": true } }
+                "decimalPlaces": { "type": { "numeric": true } }
             }
         },
         "legend": {
             "properties": {
                 "show": { "type": { "bool": true } },
-                "position": { "type": { "enumeration": [] } },
                 "fontSize": { "type": { "numeric": true } }
             }
         }
@@ -110,6 +106,6 @@
             "default": true,
             "canvas": true
         },
-        "roles": ["cohort", "period", "retention", "tooltipData"]
+        "roles": ["dayAxis", "hourAxis", "intensity", "tooltipData"]
     }
 }

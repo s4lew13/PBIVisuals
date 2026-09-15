@@ -1,13 +1,13 @@
 {
     "visual": {
-        "name": "cohortPulseRadial",
-        "displayName": "Cohort Pulse Radial",
-        "guid": "cohortPulseRadial_C0A5F1B2D3E4F5061728394A5B6C7D8E",
+        "name": "dataFlowHeatmap",
+        "displayName": "Data Flow Heatmap",
+        "guid": "dataFlowHeatmap_A1B2C3D4E5F6071829304A5B6C7D8E9F",
         "visualClassName": "Visual",
         "version": "1.0.0.0",
-        "description": "Radialna wizualizacja retencji kohort: każda kohorta to gasnący pierścień pulsujący od centrum na zewnątrz, pokazujący spadek retencji/LTV w czasie.",
-        "supportUrl": "https://github.com/lukasz-sz/cohort-pulse-radial",
-        "gitHubUrl": "https://github.com/lukasz-sz/cohort-pulse-radial"
+        "description": "Heatmapa monitoringu przepływu danych / wejść: matrix dzień tygodnia x godzina z intensywnością wolumenu (rekordy, zdarzenia, logowania) i wykrywaniem anomalii.",
+        "supportUrl": "https://github.com/s4lew13/powerbi-custom-visuals",
+        "gitHubUrl": "https://github.com/s4lew13/powerbi-custom-visuals"
     },
     "author": {
         "name": "Łukasz Sz",
